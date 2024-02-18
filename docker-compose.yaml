@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  update:
+    build:
+      dockerfile: ./Dockerfile
+      context: ./
+    volumes:
+      - ./gen:/gen
+      - ./entrypoint.sh:/workspace/entrypoint.sh
+    working_dir: /workspace
+    command: ["bash", "./entrypoint.sh"]
