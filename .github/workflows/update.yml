@@ -2,17 +2,23 @@ name: Build and test by Gradle
 on:
   schedule:
     - cron: '0 0 1 * *'
+  pull_request:
+    branches: [ "*" ]
   workflow_dispatch:
 
 jobs:
-  build:
+  update:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v2
       - name: Update tzot.json
         run: docker compose up update
       - name: Create PR if new update found
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          set -eux
           if [ -n "$(git diff)" ]; then
             TZ_VERSION=$(cat gen/version)
             gh pr create --title "Update tzot.json (${TZ_VERSION})" --body "Update tzot.json (${TZ_VERSION})"
