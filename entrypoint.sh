@@ -14,4 +14,7 @@ java -jar ziupdater.jar -v -f -l "file:tzdata.tar.gz"
 
 /workspace/gradlew run --args='/gen/tzot.json'
 
+tar -xzvf tzdata.tar.gz version
+mv version /gen/version
+
 echo '/gen/tzot.json successfully updated'

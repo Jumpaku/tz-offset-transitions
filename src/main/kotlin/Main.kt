@@ -32,11 +32,10 @@ data class Transition(
 )
 
 @Serializable
-data class Zone(val zone: String, val version: String, val transitions: List<Transition>)
+data class Zone(val zone: String, val transitions: List<Transition>)
 
 fun collectZones(): List<Zone> = ZoneRulesProvider.getAvailableZoneIds().map { id ->
-    val (version, rules) = ZoneRulesProvider.getVersions(id).lastEntry()
-    return@map Zone(id, version, rules.transitions.map { transition ->
+    Zone(id, ZoneRulesProvider.getRules(id, false).transitions.map { transition ->
         Transition(
             transition.instant.atOffset(ZoneOffset.UTC).toString(),
             transition.offsetBefore.totalSeconds,
