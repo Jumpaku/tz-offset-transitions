@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Update tzot.json
         run: docker compose up update
       - name: Create PR if new update found
@@ -21,5 +21,7 @@ jobs:
           set -eux
           if [ -n "$(git diff)" ]; then
             TZ_VERSION=$(cat gen/version)
+            git add .
+            git commit -m "Update tzot.json (${TZ_VERSION})"
             gh pr create --title "Update tzot.json (${TZ_VERSION})" --body "Update tzot.json (${TZ_VERSION})"
           fi
