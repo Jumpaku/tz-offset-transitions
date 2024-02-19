@@ -14,7 +14,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Initialize branch
         run: |
-          git checkout origin/main
+          git fetch
+          git checkout main
           git checkout gh-actions-update || git checkout -b gh-actions-update
           git merge main || true
       - name: Update tzot.json
