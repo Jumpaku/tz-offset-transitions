@@ -27,7 +27,7 @@ jobs:
             PREFIX="v1.0.0"
           fi
           NEW_TAG="${PREFIX}-${TZ_VERSION}"
-          git tag -a -m "${NEW_TAG}"
+          git tag -a -m "Update tzot.json ("${TZ_VERSION}")" "${NEW_TAG}"
           #git push --tags
 
           echo "NEW_TAG=${NEW_TAG}" >> "${GITHUB_ENV}"
