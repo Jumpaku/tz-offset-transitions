@@ -18,19 +18,19 @@ jobs:
         run: |
           git config --global user.name 'GitHub Actions'
           git config --global user.email 'github.actions@example.com'
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
+          git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}"
           git fetch
           git checkout main
           git push origin --delete gh-actions-update || true
           git checkout -b gh-actions-update
       - name: Update tzot.json
-        run: docker compose up update
+        run: docker compose up --build update
       - name: Commit and push if new version found
         run: |
           set -eux
           if [ -n "$(git diff)" ]; then
-            TZ_VERSION=$(cat gen/version)            git add .
-            git commit -m "Update tzot.json (${TZ_VERSION})"
+            TZ_VERSION=$(cat gen/version)
+            git commit -am "Update tzot.json (${TZ_VERSION})"
             git push
           fi
       - name: Create PR if new update found
