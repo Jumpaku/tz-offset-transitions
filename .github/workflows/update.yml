@@ -22,7 +22,7 @@ jobs:
           #git config --global user.name 'GitHub Actions'
           #git config --global user.email 'github.actions@example.com'
           #git remote set-url origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}"
-          #git fetch
+          git fetch
           git checkout "${MAIN_BRANCH}"
           git push origin --delete "${UPDATE_BRANCH}" || true
           git checkout -b "${UPDATE_BRANCH}"
