@@ -49,4 +49,4 @@ jobs:
             --base "${BASE_BRANCH}" \
             --head "${HEAD_BRANCH}" \
             --title "Update $TZOT_PATH ($TZ_VERSION)" \
-            --body "Job URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs/${{ github.job }}"
+            --body "GitHub Actions Run URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
