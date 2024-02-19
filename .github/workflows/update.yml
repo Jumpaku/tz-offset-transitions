@@ -31,7 +31,7 @@ jobs:
           set -eux
           docker compose up --build update
           if [ -n "$(git diff)" ]; then
-            echo "NEW_VERSION_FOUND=true >> "${GITHUB_ENV}"
+            echo "NEW_VERSION_FOUND=true" >> "${GITHUB_ENV}"
             echo "TZ_VERSION=$(cat /gen/version)" >> "${GITHUB_ENV}"
           fi
       - name: Commit and push if new version found
