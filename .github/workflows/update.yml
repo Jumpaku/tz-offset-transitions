@@ -12,7 +12,6 @@ jobs:
     env:
       BASE_BRANCH: "github-actions"
       HEAD_BRANCH: "github-actions-update"
-      GH_TOKEN: ${{ github.token }}
 
     steps:
       - uses: actions/checkout@v4
@@ -38,10 +37,12 @@ jobs:
         if: ${{ env.NEW_VERSION_FOUND == 'true' }}
         run: |
           set -eux
-          git commit -am "Update tzot.json (${TZ_VERSION})"
+          git commit -am "Update tzot.json ($TZ_VERSION)"
           git push --set-upstream origin "${HEAD_BRANCH}"
       - name: Create PR
         if: ${{ env.NEW_VERSION_FOUND == 'true' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -eux
-          gh pr create --title "Update tzot.json (${TZ_VERSION})" --body "Update tzot.json (${TZ_VERSION})" --base "${BASE_BRANCH}" --head "${HEAD_BRANCH}"
+          gh pr create --title "Update tzot.json ($TZ_VERSION)" --body "Update tzot.json ($TZ_VERSION)" --base "${BASE_BRANCH}" --head "${HEAD_BRANCH}"
