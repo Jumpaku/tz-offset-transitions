@@ -25,5 +25,5 @@ jobs:
             TZ_VERSION=$(cat gen/version)
             git add .
             git commit -m "Update tzot.json (${TZ_VERSION})"
-            gh pr create --title "Update tzot.json (${TZ_VERSION})" --body "Update tzot.json (${TZ_VERSION})"
+            gh pr create --title "Update tzot.json (${TZ_VERSION})" --body "Update tzot.json (${TZ_VERSION})" --base main
           fi
