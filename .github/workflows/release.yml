@@ -16,7 +16,7 @@ jobs:
       - name: TZ version
         run:  echo "TZ_VERSION=$(cat gen/version)" >> "${GITHUB_ENV}"
       - name: Latest release version
-        run:  echo "CURRENT_LATEST_TAG=$(gh release list --limit 1 --exclude-drafts --exclude-pre-releases --repo --json tagName --jq '.[].tagName')" >> "${GITHUB_ENV}"
+        run:  echo "CURRENT_LATEST_TAG=$(gh release list --limit 1 --exclude-drafts --exclude-pre-releases --json tagName --jq '.[].tagName')" >> "${GITHUB_ENV}"
       - name: Create tag
         run: |
           set -eux
