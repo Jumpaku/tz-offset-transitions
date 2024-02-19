@@ -82,6 +82,7 @@ data class Transition(
                 "offset_seconds_after": -14400
             },
         ...
+        ]
     },
     ...
 ]
