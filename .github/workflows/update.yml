@@ -1,0 +1,52 @@
+name: Update
+on:
+  schedule:
+    - cron: '0 0 1 * *'
+  pull_request:
+    branches: [ "*" ]
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    env:
+      BASE_BRANCH: "github-actions"
+      HEAD_BRANCH: "github-actions-update"
+      TZOT_PATH: "tzot.json"
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Initialize branch
+        run: |
+          set -eux
+          git config --global user.name 'GitHub Actions Update'
+          git config --global user.email 'github.actions.update@example.com'
+          git fetch
+          git checkout "${BASE_BRANCH}"
+          git push origin --delete "${HEAD_BRANCH}" || true
+          git checkout -b "${HEAD_BRANCH}"
+      - name: Update ${{ env.TZOT_PATH }}
+        run: |
+          set -eux
+          docker compose up --build update
+          if [ -n "$(git diff)" ]; then
+            echo "NEW_VERSION_FOUND=true" >> "${GITHUB_ENV}"
+            echo "TZ_VERSION=$(cat gen/version)" >> "${GITHUB_ENV}"
+          fi
+      - name: Commit and push
+        if: ${{ env.NEW_VERSION_FOUND == 'true' }}
+        run: |
+          set -eux
+          git commit -am "Update $TZOT_PATH ($TZ_VERSION)"
+          git push --set-upstream origin "${HEAD_BRANCH}"
+      - name: Create PR
+        if: ${{ env.NEW_VERSION_FOUND == 'true' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -eux
+          gh pr create \
+            --base "${BASE_BRANCH}" \
+            --head "${HEAD_BRANCH}" \
+            --title "Update $TZOT_PATH ($TZ_VERSION)" \
+            --body "GitHub Actions Run URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
