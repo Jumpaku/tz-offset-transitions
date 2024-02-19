@@ -1,0 +1,40 @@
+name: Release
+on:
+  pull_request:
+    types:
+      - closed
+    branches: [ "main" ]
+#  workflow_dispatch:
+
+jobs:
+  release_draft:
+    if: ${{ github.event.pull_request.merged && github.head_ref == "github-actions-update" }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: TZ version
+        run:  echo "TZ_VERSION=$(cat gen/version)" >> "${GITHUB_ENV}"
+      - name: Latest release version
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run:  echo "CURRENT_LATEST_TAG=$(gh release list --limit 1 --exclude-drafts --exclude-pre-releases --json tagName --jq '.[].tagName')" >> "${GITHUB_ENV}"
+      - name: Create tag
+        run: |
+          set -eux
+          PREFIX=$(echo "${CURRENT_LATEST_TAG}" | sed -e 's|-.*$||g')
+          if [ "${PREFIX}" = "" ]; then
+            PREFIX="v1.0.0"
+          fi
+          NEW_TAG="${PREFIX}-${TZ_VERSION}"
+          
+          git config --global user.name 'GitHub Actions Release'
+          git config --global user.email 'github.actions.release@example.com'
+          git tag -a -m "Update (${TZ_VERSION})" "${NEW_TAG}"
+          git push --tags
+
+          echo "NEW_TAG=${NEW_TAG}" >> "${GITHUB_ENV}"
+      - name: Draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create --draft --latest --generate-notes --title "${NEW_TAG}" "${NEW_TAG}"
