@@ -31,10 +31,10 @@ jobs:
           git config --global user.name 'GitHub Actions Release'
           git config --global user.email 'github.actions.release@example.com'
           git tag -a -m "Update (${TZ_VERSION})" "${NEW_TAG}"
-          #git push --tags
+          git push --tags
 
           echo "NEW_TAG=${NEW_TAG}" >> "${GITHUB_ENV}"
       - name: Draft release
-        run: |
-          echo "${NEW_TAG}"
-          #gh release create --draft --latest --generate-notes --title "${NEW_TAG}"
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create --draft --latest --generate-notes --title "${NEW_TAG}"
