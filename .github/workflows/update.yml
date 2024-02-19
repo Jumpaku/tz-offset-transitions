@@ -1,4 +1,4 @@
-name: Build and test by Gradle
+name: Update
 on:
   schedule:
     - cron: '0 0 1 * *'
@@ -19,8 +19,8 @@ jobs:
       - name: Initialize branch
         run: |
           set -eux
-          #git config --global user.name 'GitHub Actions'
-          #git config --global user.email 'github.actions@example.com'
+          git config --global user.name 'GitHub Actions Update'
+          git config --global user.email 'github.actions.update@example.com'
           #git remote set-url origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}"
           git fetch
           git checkout "${MAIN_BRANCH}"
