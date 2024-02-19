@@ -16,8 +16,8 @@ jobs:
         run: |
           git fetch
           git checkout main
-          git checkout gh-actions-update || git checkout -b gh-actions-update
-          git merge main || true
+          git push origin --delete gh-actions-update || true
+          git checkout -b gh-actions-update
       - name: Update tzot.json
         run: docker compose up update
       - name: Commit and push if new version found
