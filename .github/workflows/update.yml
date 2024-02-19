@@ -12,6 +12,7 @@ jobs:
     env:
       BASE_BRANCH: "github-actions"
       HEAD_BRANCH: "github-actions-update"
+      TZOT_PATH: "tzot.json"
 
     steps:
       - uses: actions/checkout@v4
@@ -20,24 +21,23 @@ jobs:
           set -eux
           git config --global user.name 'GitHub Actions Update'
           git config --global user.email 'github.actions.update@example.com'
-          #git remote set-url origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}"
           git fetch
           git checkout "${BASE_BRANCH}"
           git push origin --delete "${HEAD_BRANCH}" || true
           git checkout -b "${HEAD_BRANCH}"
-      - name: Update tzot.json
+      - name: Update ${{ env.TZOT_PATH }}
         run: |
           set -eux
           docker compose up --build update
           if [ -n "$(git diff)" ]; then
             echo "NEW_VERSION_FOUND=true" >> "${GITHUB_ENV}"
-            echo "TZ_VERSION=$(cat /gen/version)" >> "${GITHUB_ENV}"
+            echo "TZ_VERSION=$(cat gen/version)" >> "${GITHUB_ENV}"
           fi
       - name: Commit and push
         if: ${{ env.NEW_VERSION_FOUND == 'true' }}
         run: |
           set -eux
-          git commit -am "Update tzot.json ($TZ_VERSION)"
+          git commit -am "Update $TZOT_PATH ($TZ_VERSION)"
           git push --set-upstream origin "${HEAD_BRANCH}"
       - name: Create PR
         if: ${{ env.NEW_VERSION_FOUND == 'true' }}
@@ -45,4 +45,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -eux
-          gh pr create --title "Update tzot.json ($TZ_VERSION)" --body "Update tzot.json ($TZ_VERSION)" --base "${BASE_BRANCH}" --head "${HEAD_BRANCH}"
+          gh pr create \
+            --base "${BASE_BRANCH}" \
+            --head "${HEAD_BRANCH}" \
+            --title "Update $TZOT_PATH ($TZ_VERSION)" \
+            --body "Job URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs/${{ github.job }}"
