@@ -13,7 +13,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Initialize branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          git config --global user.name 'GitHub Actions'
+          git config --global user.email 'github.actions@example.com'
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
           git fetch
           git checkout main
           git push origin --delete gh-actions-update || true
@@ -24,8 +29,7 @@ jobs:
         run: |
           set -eux
           if [ -n "$(git diff)" ]; then
-            TZ_VERSION=$(cat gen/version)
-            git add .
+            TZ_VERSION=$(cat gen/version)            git add .
             git commit -m "Update tzot.json (${TZ_VERSION})"
             git push
           fi
