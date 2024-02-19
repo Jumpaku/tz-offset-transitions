@@ -12,18 +12,27 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - name: Initialize branch
+        run: |
+          git checkout gh-actions-update || git checkout -b gh-actions-update
+          git merge main
       - name: Update tzot.json
         run: docker compose up update
+      - name: Commit and push if new version found
+        run: |
+          set -eux
+          if [ -n "$(git diff)" ]; then
+            TZ_VERSION=$(cat gen/version)
+            git add .
+            git commit -m "Update tzot.json (${TZ_VERSION})"
+            git push
+          fi
       - name: Create PR if new update found
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -eux
-          git config --global user.email "github.actions.user@example.com"
-          git config --global user.name "GitHub Actions User"
           if [ -n "$(git diff)" ]; then
             TZ_VERSION=$(cat gen/version)
-            git add .
-            git commit -m "Update tzot.json (${TZ_VERSION})"
-            gh pr create --title "Update tzot.json (${TZ_VERSION})" --body "Update tzot.json (${TZ_VERSION})" --base main
+            gh pr create --title "Update tzot.json (${TZ_VERSION})" --body "Update tzot.json (${TZ_VERSION})" --base main --head gh-actions-update
           fi
