@@ -16,13 +16,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          UPDATE_BRANCH="github-actions-update"
           git config --global user.name 'GitHub Actions'
           git config --global user.email 'github.actions@example.com'
           git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}"
           git fetch
-          git checkout main
-          git push origin --delete gh-actions-update || true
-          git checkout -b gh-actions-update
+          git checkout github-actions
+          git push origin --delete "${UPDATE_BRANCH}" || true
+          git checkout -b "${UPDATE_BRANCH}"
       - name: Update tzot.json
         run: docker compose up --build update
       - name: Commit and push if new version found
