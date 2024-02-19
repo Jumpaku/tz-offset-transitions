@@ -21,18 +21,32 @@ fun main(vararg args: String) {
     }
 }
 
+/** Timezone consists of a collection of timezone offset transitions. */
+@Serializable
+data class Zone(
+    /** Name of a timezone. */
+    val zone: String,
+
+    /** Collection of timezone offset transitions. */
+    val transitions: List<Transition>,
+)
+
+/** Timezone offset transition between timezone offsets. */
 @Serializable
 data class Transition(
+    /** Timestamp indicating when a transition between timezone offsets occurs in form `2024-02-24T18:31:25Z`. */
     @SerialName("transition_timestamp")
     val transitionTimestamp: String,
+
+    /** Amount of timezone offset before the transition in second. */
     @SerialName("offset_seconds_before")
     val offsetSecondsBefore: Int,
+
+    /** Amount of timezone offset after the transition in second. */
     @SerialName("offset_seconds_after")
     val offsetSecondsAfter: Int,
 )
 
-@Serializable
-data class Zone(val zone: String, val transitions: List<Transition>)
 
 fun collectZones(): List<Zone> = ZoneRulesProvider.getAvailableZoneIds().map { id ->
     Zone(id, ZoneRulesProvider.getRules(id, false).transitions.map { transition ->
