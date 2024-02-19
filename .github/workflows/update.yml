@@ -1,16 +1,14 @@
 name: Update
 on:
   schedule:
-    - cron: '0 0 1 * *'
-  pull_request:
-    branches: [ "*" ]
+    - cron: '40 18 19 * *'
   workflow_dispatch:
 
 jobs:
   update:
     runs-on: ubuntu-latest
     env:
-      BASE_BRANCH: "github-actions"
+      BASE_BRANCH: "main"
       HEAD_BRANCH: "github-actions-update"
       TZOT_PATH: "tzot.json"
 
