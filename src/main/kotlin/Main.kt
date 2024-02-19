@@ -34,7 +34,7 @@ data class Zone(
 /** Timezone offset transition between timezone offsets. */
 @Serializable
 data class Transition(
-    /** Timestamp when a transition between timezone offsets occurs in form `2024-02-24T18:31:25Z`. */
+    /** Timestamp indicating when a transition between timezone offsets occurs in form `2024-02-24T18:31:25Z`. */
     @SerialName("transition_timestamp")
     val transitionTimestamp: String,
 
