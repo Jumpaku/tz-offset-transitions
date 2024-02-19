@@ -19,6 +19,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -eux
+          git config --global user.email "github.actions.user@example.com"
+          git config --global user.name "GitHub Actions User"
           if [ -n "$(git diff)" ]; then
             TZ_VERSION=$(cat gen/version)
             git add .
