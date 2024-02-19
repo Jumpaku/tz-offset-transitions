@@ -35,13 +35,13 @@ jobs:
             echo "TZ_VERSION=$(cat /gen/version)" >> "${GITHUB_ENV}"
           fi
       - name: Commit and push if new version found
-        if: ${{ env.NEW_VERSION_FOUND == "true" }}
+        if: ${{ env.NEW_VERSION_FOUND == 'true' }}
         run: |
           set -eux
           git commit -am "Update tzot.json (${TZ_VERSION})"
           git push --set-upstream origin "${UPDATE_BRANCH}"
       - name: Create PR if new update found
-        if: ${{ env.NEW_VERSION_FOUND == "true" }}
+        if: ${{ env.NEW_VERSION_FOUND == 'true' }}
         run: |
           set -eux
           gh pr create --title "Update tzot.json (${TZ_VERSION})" --body "Update tzot.json (${TZ_VERSION})" --base main --head gh-actions-update
