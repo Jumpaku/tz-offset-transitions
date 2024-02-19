@@ -39,7 +39,7 @@ jobs:
         run: |
           set -eux
           git commit -am "Update tzot.json (${TZ_VERSION})"
-          git push --set-upstream origin "${UPDATE_BRANCH}"
+          git push --set-upstream origin "${HEAD_BRANCH}"
       - name: Create PR
         if: ${{ env.NEW_VERSION_FOUND == 'true' }}
         run: |
