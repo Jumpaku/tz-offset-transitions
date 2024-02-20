@@ -6,6 +6,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.io.File
 import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 import java.time.zone.ZoneRulesProvider
 
 fun main(vararg args: String) {
@@ -51,7 +52,7 @@ data class Transition(
 fun collectZones(): List<Zone> = ZoneRulesProvider.getAvailableZoneIds().map { id ->
     Zone(id, ZoneRulesProvider.getRules(id, false).transitions.map { transition ->
         Transition(
-            transition.instant.atOffset(ZoneOffset.UTC).toString(),
+            transition.instant.atOffset(ZoneOffset.UTC).format(DateTimeFormatter.ISO_OFFSET_DATE_TIME),
             transition.offsetBefore.totalSeconds,
             transition.offsetAfter.totalSeconds
         )
