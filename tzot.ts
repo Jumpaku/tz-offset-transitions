@@ -59,7 +59,7 @@ type WeekDayPositive = RuleBase & {
     /** Day-of-week, from 1 (Monday) to 7 (Sunday). */
     day_of_week: number;
 
-    /** Days counting from the first of the month, which from 1 to 31. */
+    /** Days counting from the first of the month, from 1 to 31. */
     days: number;
 };
 
@@ -74,7 +74,7 @@ type WeekDayNegative = RuleBase & {
     /** Day-of-week, from 1 (Monday) to 7 (Sunday). */
     day_of_week: number;
 
-    /** Days counting from the first of the month, which from 1 to 31. */
+    /** Days counting from the last of the month, from 1 to 28. */
     days_from_last: number;
 };
 
@@ -86,7 +86,7 @@ type MonthDayPositive = RuleBase & {
 
     type: "net.jumpaku.tzot.Rule.MonthDayPositive";
 
-    /** Days counting from the first of the month, which from 1 to 31. */
+    /** Days counting from the first of the month, from 1 to 31. */
     days: number;
 };
 
@@ -98,6 +98,6 @@ type MonthDayNegative = RuleBase & {
 
     type: "net.jumpaku.tzot.Rule.MonthDayNegative";
 
-    /** Days counting from the first of the month, which from 1 to 31. */
+    /** Days counting from the last of the month, from 1 to 28. */
     days_from_last: number;
 }
