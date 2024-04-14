@@ -1,6 +1,7 @@
 version: '3'
 
 services:
+
   update:
     build:
       dockerfile: ./Dockerfile
@@ -8,5 +9,13 @@ services:
     volumes:
       - ./gen:/gen
       - ./entrypoint.sh:/workspace/entrypoint.sh
-    working_dir: /workspace
-    command: ["bash", "./entrypoint.sh"]
+    command: ["sh", "./entrypoint.sh"]
+
+  schema:
+    build:
+      dockerfile: ./schema/Dockerfile
+      #context: ./schema/
+    volumes:
+      - ./gen:/workspace/gen
+      - ./schema:/workspace/schema
+    command: ["sh", "./entrypoint.sh"]

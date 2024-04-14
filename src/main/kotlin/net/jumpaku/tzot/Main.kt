@@ -52,18 +52,9 @@ fun collectZones(): List<Zone> = ZoneRulesProvider.getAvailableZoneIds().map { i
                 val indicator = r.dayOfMonthIndicator
                 when {
                     dow != null && r.dayOfMonthIndicator > 0 ->
-                        Rule.WeekDayPositive(offsetBefore, offsetAfter, month, transitionAt, dow, indicator)
+                        Rule(offsetBefore, offsetAfter, month, indicator, dow, transitionAt)
 
-                    dow != null && r.dayOfMonthIndicator < 0 ->
-                        Rule.WeekDayNegative(offsetBefore, offsetAfter, month, transitionAt, dow, -indicator)
-
-                    dow == null && r.dayOfMonthIndicator > 0 ->
-                        Rule.MonthDayPositive(offsetBefore, offsetAfter, month, transitionAt, indicator)
-
-                    dow == null && r.dayOfMonthIndicator < 0 ->
-                        Rule.MonthDayNegative(offsetBefore, offsetAfter, month, transitionAt, -indicator)
-
-                    else -> error("unexpected rule")
+                    else -> error("unsupported rule")
                 }
             },
         )
