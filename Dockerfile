@@ -18,4 +18,4 @@ COPY build.gradle /workspace/build.gradle
 COPY settings.gradle /workspace/settings.gradle
 COPY src /workspace/src
 
-CMD ["/workspace/gradlew", "run", "--args='/gen/tzot.json'"]
+WORKDIR /workspace
