@@ -28,8 +28,8 @@ This mechanism is implemented as a GitHub Actions workflow which updates the `ge
 
 ## Format of gen/tzot.json
 
-The format of the `gen/tzot.json` is a JSON value that can be assigned to a type `TzotJSON`.
-The definition of the type is available in `tzot_json.ts`, which specifies the structure of the JSON.
+The format of the `gen/tzot.json` is a JSON value that can be assigned to a type `TzotJson`.
+The definition of the type is available in `schema/tzot_json.ts`, which specifies the structure of the JSON.
 
 The below shows an example of the JSON value.
 
